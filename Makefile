@@ -17,11 +17,11 @@
 #
 
 ifdef DEV
-OWRT_GIT = gitosis@git.confine-project.eu:confine/openwrt.git
-OWRT_PKG_GIT = gitosis@git.confine-project.eu:confine/packages.git
+OWRT_GIT = https://github.com/gdaneels/backfire-omf.git
+OWRT_PKG_GIT = https://github.com/gdaneels/backfire-packages.git
 else
-OWRT_GIT = http://git.confine-project.eu/confine/openwrt.git
-OWRT_PKG_GIT = http://git.confine-project.eu/confine/packages.git
+OWRT_GIT = https://github.com/gdaneels/backfire-omf.git
+OWRT_PKG_GIT = https://github.com/gdaneels/backfire-packages.git
 endif
 
 TIMESTAMP = $(shell date +%d%m%y_%H%M)
@@ -43,7 +43,8 @@ IMAGE_TYPE ?= ext4
 J ?= 1
 V ?= 0
 MAKE_SRC = -j$(J) V=$(V)
-CONFINE_VERSION ?= master
+CONFINE_VERSION ?= backfire
+OPENWRT_VERSION ?= testing
 
 define prepare_workspace
 	git clone $(OWRT_GIT) "$(BUILD_DIR)"
@@ -84,8 +85,8 @@ endef
 
 define update_workspace
 	git pull origin $(CONFINE_VERSION) && git checkout $(CONFINE_VERSION)
-	(cd "$(BUILD_DIR)" && git pull && git checkout $(CONFINE_VERSION))
-	(cd "$(OWRT_PKG_DIR)" && git pull && git checkout $(CONFINE_VERSION))
+	(cd "$(BUILD_DIR)" && git pull && git checkout $(OPENWRT_VERSION))
+	(cd "$(OWRT_PKG_DIR)" && git pull && git checkout $(OPENWRT_VERSION))
 endef
 
 define build_src
