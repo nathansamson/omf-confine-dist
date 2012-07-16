@@ -43,7 +43,7 @@ IMAGE_TYPE ?= ext4
 J ?= 1
 V ?= 0
 MAKE_SRC = -j$(J) V=$(V)
-CONFINE_VERSION ?= master
+CONFINE_VERSION ?= testing
 
 define prepare_workspace
 	git clone $(OWRT_GIT) "$(BUILD_DIR)"
