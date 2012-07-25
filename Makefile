@@ -103,9 +103,11 @@ endef
 
 define nightly_build
 	$(eval REV_ID := $(shell git log -n 1 --format=oneline | cut -f1 -d' '))
-	$(eval OWRT_REV_ID := $(shell cd $(BUILD_DIR); git log -n 1 --format=oneline | cut -f1 -d' '))
-	$(eval PACKAGES_REV_ID := $(shell cd $(OWRT_PKG_DIR); git log -n 1 --format=oneline | cut -f1 -d' '))
-	$(eval BUILD_ID := $(REV_ID)-$(OWRT_REV_ID)-$(PACKAGES_REV_ID))
+	$(eval OWRT_REV_ID := $(shell cd $(BUILD_DIR); git log -n 1 --format=format:%h)
+	$(eval PACKAGES_REV_ID := $(shell cd $(OWRT_PKG_DIR); git log -n 1 --format=format:%h)
+	$(eval OMF_FEED_REV_ID := $(shell cd $(BUILD_DIR/feeds/omf); git log -n 1 --format=format:%h)
+	
+	$(eval BUILD_ID := $(BUILD_NUMBER)-$(REV_ID)-$(OWRT_REV_ID)-$(PACKAGES_REV_ID)-$(OMF_FEED_REV_ID))
 
 	@echo $(BUILD_ID)
 	
@@ -113,7 +115,7 @@ define nightly_build
 	cp -f "$(BUILD_DIR)/bin/x86/$(TARGET)-rootfs.tar.gz" "$(NIGHTLY_IMAGES_DIR)/omf-openwrt-trunk-$(CONFINE_VERSION)-$(BUILD_ID)-rootfs.tar.gz"
 	
 	ln -fs  "$(NIGHTLY_IMAGES_DIR)/omf-openwrt-trunk-$(CONFINE_VERSION)-$(BUILD_ID)-rootfs.tar.gz" "$(NIGHTLY_IMAGES_DIR)/omf-openwrt-trunk-rootfs-latest.tar.gz"
-    cp -f "$(BUILD_DIR)/bin/x86/$(IMAGE)-$(IMAGE_TYPE).img.gz" "$(NIGHTLY_IMAGES_DIR)/omf-openwrt-trunk-$(CONFINE_VERSION)-$(BUILD_ID)-$(IMAGE_TYPE).img.gz"
+    #cp -f "$(BUILD_DIR)/bin/x86/$(IMAGE)-$(IMAGE_TYPE).img.gz" "$(NIGHTLY_IMAGES_DIR)/omf-openwrt-trunk-$(CONFINE_VERSION)-$(BUILD_ID)-$(IMAGE_TYPE).img.gz"
 endef
 
 
